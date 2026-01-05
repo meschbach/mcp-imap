@@ -20,6 +20,6 @@ COPY --from=data /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=data /etc/passwd /etc/passwd
 COPY --from=data /etc/group /etc/group
 USER appuser:appuser
-ADD release/$TARGETARCH_$TARGETOS/mcp-imap /mcp-imap
+ADD release/${TARGETARCH}_${TARGETOS}/mcp-imap /mcp-imap
 
 ENTRYPOINT ["/mcp-imap"]
