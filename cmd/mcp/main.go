@@ -13,6 +13,8 @@ import (
 	"golang.org/x/sys/unix"
 )
 
+var version = "dev"
+
 func main() {
 	procCtx, done := signal.NotifyContext(context.Background(), unix.SIGTERM, unix.SIGINT, unix.SIGSTOP)
 	defer done()
@@ -33,11 +35,9 @@ func main() {
 		}
 	}()
 
-	//clientTransport, serverTransport := mcp.NewInMemoryTransports()
-
 	server := mcp.NewServer(&mcp.Implementation{
 		Name:    "mcp-imap",
-		Version: "v0.0.1",
+		Version: version,
 	}, &mcp.ServerOptions{
 		Instructions: "An IMAP client is attached via mcp with the protocol `mcp-imap`.",
 	})

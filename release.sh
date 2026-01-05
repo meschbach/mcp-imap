@@ -2,8 +2,11 @@
 
 #!/bin/bash
 
+git_version=$(git describe --tags --always --dirty)
+
 : ${TARGET_ARCHS:="amd64 arm64"}
 : ${TARGET_OS:="linux darwin"}
+: ${BUILD_VERSION:=$git_version}
 
 function compile() {
   local name=$1 ;shift
@@ -11,7 +14,7 @@ function compile() {
   local os=$1 ; shift
   local cmd_name=$1; shift
   local output="release/${arch}_${os}/$name"
-  CGO_ENABLED=0 GOOS=$os GOARCH=$arch go build -ldflags='-w -s -extldflags "-static"' -o "$output" "./cmd/$cmd_name"
+  CGO_ENABLED=0 GOOS=$os GOARCH=$arch go build -ldflags="-w -s -extldflags \"-static\" -X main.version=${BUILD_VERSION}" -o "$output" "./cmd/$cmd_name"
 }
 
 for arch in ${TARGET_ARCHS}
